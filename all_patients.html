@@ -8,46 +8,49 @@
 
 <script>
 async function loadAll(){
-  const res = await fetch('/api/patients');
-  const data = await res.json();
-  const table = document.getElementById('allTable');
-  table.tHead.innerHTML='';
-  table.tBodies[0].innerHTML='';
+  try {
+    const res = await fetch('/api/patients');
+    console.log('API response status:', res.status);
+    const data = await res.json();
+    console.log('API data:', data);
 
-  if(data.length===0){
-    table.tBodies[0].innerHTML='<tr><td colspan=15>No data</td></tr>';
-    return;
-  }
+    const table = document.getElementById('allTable');
+    table.tHead.innerHTML = '';
+    table.tBodies[0].innerHTML = '';
 
-  // Prepare headers (Patient ID first)
-  const headers = ['Patient_ID', ...Object.keys(data[0]).filter(k=>k!=='Patient_ID')];
-  const headerRow = document.createElement('tr');
-  headers.forEach(k=>{
-    const th = document.createElement('th');
-    th.innerText = k;
-    headerRow.appendChild(th);
-  });
-  table.tHead.appendChild(headerRow);
+    if(!Array.isArray(data) || data.length === 0){
+      table.tBodies[0].innerHTML = '<tr><td colspan="13">No data</td></tr>';
+      return;
+    }
 
-  data.forEach(row=>{
-    const tr = document.createElement('tr');
+    const headers = ['Patient_ID', ...Object.keys(data[0]).filter(k => k !== 'Patient_ID')];
+    const headerRow = document.createElement('tr');
+    headers.forEach(k => {
+      const th = document.createElement('th');
+      th.innerText = k;
+      headerRow.appendChild(th);
+    });
+    table.tHead.appendChild(headerRow);
 
-    headers.forEach(h=>{
-      const td = document.createElement('td');
-      td.innerText = row[h] || '';
-
-      // Highlight Pending Confirmation
-      if(h==='Attended' && row[h]==='Pending Confirmation'){
-        td.style.backgroundColor = '#fff3cd'; // yellow
-      }
-
-      tr.appendChild(td);
+    data.forEach(row => {
+      const tr = document.createElement('tr');
+      headers.forEach(h => {
+        const td = document.createElement('td');
+        td.innerText = row[h] || '';
+        tr.appendChild(td);
+      });
+      table.tBodies[0].appendChild(tr);
     });
 
-    table.tBodies[0].appendChild(tr);
-  });
+  } catch(err) {
+    console.error('Error loading all patients:', err);
+    const table = document.getElementById('allTable');
+    table.tBodies[0].innerHTML = '<tr><td colspan="13">Error loading data</td></tr>';
+  }
 }
 
 loadAll();
+
 </script>
 {% endblock %}
+

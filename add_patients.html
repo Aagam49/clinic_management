@@ -1,294 +1,201 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>All Patients | Clinic Dashboard</title>
+{% extends "base.html" %}
+{% block content %}
+<div class="row justify-content-center mt-4">
+    <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="card shadow-sm p-4">
+            <h2 class="text-center text-primary mb-4">➕ Add Patient</h2>
+            <form id="addForm">
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+                <div class="mb-3">
+                    <label for="patientId" class="form-label">Patient ID</label>
+                    <input id="patientId" class="form-control" name="Patient ID" required>
+                </div>
 
-  <style>
-    body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f8fafc;
-      color: #333;
-    }
+                <div class="mb-3">
+                    <label for="name" class="form-label">Name</label>
+                    <input id="name" class="form-control" name="Name" required>
+                </div>
 
-    /* ✅ Keep header exactly same */
-    nav.navbar {
-      font-family: 'Poppins', sans-serif;
-    }
+                <div class="mb-3">
+                    <label for="number" class="form-label">Number</label>
+                    <input id="number" class="form-control" name="Number" required>
+                </div>
 
-    /* Page title section */
-    .page-header {
-      text-align: center;
-      margin: 40px 0 25px;
-    }
-    .page-header h2 {
-      font-weight: 600;
-      color: #222;
-    }
-    .page-header small {
-      color: #6c757d;
-    }
+                <div class="mb-3">
+                    <label for="age" class="form-label">Age</label>
+                    <input id="age" class="form-control" name="Age" type="number">
+                </div>
 
-    /* Filters Section */
-    .filters {
-      background: #ffffff;
-      padding: 15px 20px;
-      border-radius: 12px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
-      margin-bottom: 25px;
-    }
-    .filters label {
-      font-weight: 500;
-      font-size: 14px;
-      color: #555;
-    }
-    .filters select, .filters input {
-      border-radius: 8px;
-    }
+                <div class="mb-3">
+                    <label for="gender" class="form-label">Gender</label>
+                    <select id="gender" class="form-select" name="Gender">
+                        <option value="" selected disabled>Select Gender</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
 
-    /* Card & Table */
-    .card {
-      border: none;
-      border-radius: 14px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
-      background: #fff;
-      overflow: hidden;
-    }
+                <div class="mb-3">
+                    <label for="occupation" class="form-label">Occupation</label>
+                    <input id="occupation" class="form-control" name="Occupation">
+                </div>
 
-    table {
-      border-collapse: separate;
-      border-spacing: 0 8px;
-    }
+                <div class="mb-3">
+                    <label for="refby" class="form-label">Ref. by</label>
+                    <input id="refby" class="form-control" name="Ref. by">
+                </div>
 
-    th {
-      background: #f1f5f9;
-      color: #0d6efd;
-      font-weight: 600;
-      border: none;
-      text-transform: uppercase;
-      font-size: 13px;
-    }
+                <div class="mb-3">
+                    <label for="address" class="form-label">Address</label>
+                    <input id="address" class="form-control" name="Address">
+                </div>
 
-    td {
-      background: #ffffff;
-      border: none;
-      vertical-align: middle;
-      font-size: 14px;
-      padding: 10px 12px !important;
-    }
+                <div class="mb-3">
+                    <label for="doj" class="form-label">Date of joining</label>
+                    <input id="doj" class="form-control" name="Date of joining" type="date">
+                </div>
 
-    tr {
-      border-radius: 10px;
-      transition: all 0.2s ease;
-    }
+                <div class="mb-3">
+                    <label for="conditions" class="form-label">Conditions</label>
+                    <select id="conditions" class="form-select" name="Conditions">
+                        <option value="" selected disabled>Select Condition</option>
+                        <option value="Physiotherapy">Physiotherapy</option>
+                        <option value="Pain Management">Pain Management</option>
+                        <option value="Rehabilitation">Rehabilitation</option>
+                        <option value="Post Surgery">Post Surgery</option>
+                    </select>
+                </div>
 
-    tr:hover td {
-      background-color: #eef6ff !important;
-    }
+                <div class="mb-3">
+                    <label for="time" class="form-label">Time</label>
+                    <input id="time" class="form-control" name="Time" type="time">
+                </div>
 
-    .badge-day {
-      background-color: #e9f3ff;
-      color: #0d6efd;
-      border-radius: 20px;
-      padding: 4px 10px;
-      margin: 2px;
-      font-size: 12px;
-      display: inline-block;
-    }
+                <div class="mb-3">
+                    <label class="form-label">Visit Days</label>
+                    <div id="visitDaysCheckboxes" class="d-flex flex-wrap gap-2">
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Monday" id="dayMonday"><label class="form-check-label" for="dayMonday">Monday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Tuesday" id="dayTuesday"><label class="form-check-label" for="dayTuesday">Tuesday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Wednesday" id="dayWednesday"><label class="form-check-label" for="dayWednesday">Wednesday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Thursday" id="dayThursday"><label class="form-check-label" for="dayThursday">Thursday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Friday" id="dayFriday"><label class="form-check-label" for="dayFriday">Friday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Saturday" id="daySaturday"><label class="form-check-label" for="daySaturday">Saturday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Sunday" id="daySunday"><label class="form-check-label" for="daySunday">Sunday</label></div>
+                        <div class="form-check"><input class="form-check-input" type="checkbox" value="Daily" id="dayDaily"><label class="form-check-label" for="dayDaily">Daily</label></div>
+                    </div>
+                    <input type="text" id="selectedDays" class="form-control mt-2" placeholder="Selected Days" readonly>
+                </div>
 
-    /* Footer */
-    .footer {
-      text-align: center;
-      color: #888;
-      font-size: 14px;
-      margin-top: 50px;
-      padding-bottom: 20px;
-    }
-
-    /* Table Responsiveness */
-    .table-responsive {
-      border-radius: 12px;
-      overflow-x: auto;
-    }
-  </style>
-</head>
-
-<body>
-  <!-- ✅ Header unchanged -->
-  <nav class="navbar navbar-expand-lg navbar-dark px-4" style="background-color: #007bff;">
-    <a class="navbar-brand" href="/">Clinic Dashboard</a>
-    <ul class="navbar-nav ms-3">
-      <li class="nav-item"><a href="/today" class="nav-link">Today's Patients</a></li>
-      <li class="nav-item"><a href="/add" class="nav-link">Add Patient</a></li>
-      <li class="nav-item"><a href="/history" class="nav-link active">All Patients</a></li>
-    </ul>
-  </nav>
-
-  <!-- Page Header -->
-  <div class="page-header">
-    <h2>All Patients</h2>
-    <small id="patientCount">Loading total patients...</small>
-  </div>
-
-  <div class="container">
-    <!-- 🔍 Filters -->
-    <div class="filters row g-3 align-items-end">
-      <div class="col-md-4">
-        <label for="searchInput">Search</label>
-        <input type="text" id="searchInput" class="form-control" placeholder="Search by name, ID, or number">
-      </div>
-      <div class="col-md-3">
-        <label for="genderFilter">Gender</label>
-        <select id="genderFilter" class="form-select">
-          <option value="">All</option>
-          <option value="Male">Male</option>
-          <option value="Female">Female</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <label for="conditionFilter">Condition</label>
-        <select id="conditionFilter" class="form-select">
-          <option value="">All</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <label for="dayFilter">Visit Day</label>
-        <select id="dayFilter" class="form-select">
-          <option value="">All</option>
-          <option>Monday</option>
-          <option>Tuesday</option>
-          <option>Wednesday</option>
-          <option>Thursday</option>
-          <option>Friday</option>
-          <option>Saturday</option>
-          <option>Sunday</option>
-        </select>
-      </div>
-    </div>
-
-    <!-- Table Card -->
-    <div class="card p-3 mb-5">
-      <div class="card-body">
-        <div class="table-responsive">
-          <table class="table align-middle text-center" id="patientsTable">
-            <thead>
-              <tr>
-                <th>Patient ID</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Gender</th>
-                <th>Conditions</th>
-                <th>Date of joining</th>
-                <th>Number</th>
-                <th>Address</th>
-                <th>Occupation</th>
-                <th>Ref. by</th>
-                <th>Time</th>
-                <th>Visit Count</th>
-                <th>Visit Days</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td colspan="13">Loading...</td></tr>
-            </tbody>
-          </table>
+                <button type="submit" class="btn btn-success w-100">Add Patient</button>
+            </form>
         </div>
-      </div>
     </div>
-  </div>
+</div>
 
-  <!-- Footer -->
-  <div class="footer">© 2025 Clinic Dashboard</div>
+<script>
+// IMPORTANT: This list must EXACTLY match the CANONICAL_HEADERS list in your app.py
+const CANONICAL_HEADERS = [
+    "Patient ID",
+    "Name",
+    "Number",
+    "Age",
+    "Gender",
+    "Occupation",
+    "Ref. by",
+    "Address",
+    "Date of joining",
+    "Conditions",
+    "Time",
+    "Visit Days",
+    "Visit Count",
+];
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    let allPatients = [];
+// Update selected days preview logic...
+const checkboxes = document.querySelectorAll('#visitDaysCheckboxes input[type=checkbox]');
+const selectedField = document.getElementById('selectedDays');
+checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+        const selected = Array.from(checkboxes)
+            .filter(i => i.checked)
+            .map(i => i.value);
+        selectedField.value = selected.join(', ');
+    });
+});
 
-    async function loadPatients() {
-      try {
-        const response = await fetch('/api/patients');
-        allPatients = await response.json();
-        document.getElementById("patientCount").innerText = `Total Patients: ${allPatients.length}`;
-        populateConditionFilter();
-        renderTable(allPatients);
-      } catch (err) {
-        console.error("Error loading patients:", err);
-      }
+// Submit new patient logic
+document.getElementById('addForm').addEventListener('submit', async e => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    const formValues = {};
+    
+    // 1. Collect all raw form data into an object
+    for (let pair of formData.entries()) {
+        formValues[pair[0]] = pair[1];
     }
-
-    function populateConditionFilter() {
-      const conditions = [...new Set(allPatients.map(p => p.Conditions).filter(Boolean))];
-      const select = document.getElementById("conditionFilter");
-      conditions.forEach(c => {
-        const opt = document.createElement("option");
-        opt.textContent = c;
-        select.appendChild(opt);
-      });
-    }
-
-    function renderTable(patients) {
-      const tbody = document.querySelector("#patientsTable tbody");
-      tbody.innerHTML = "";
-      if (patients.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="13">No matching patients found</td></tr>`;
-        return;
-      }
-
-      patients.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${p.Patient_ID || ''}</td>
-          <td>${p.Name || ''}</td>
-          <td>${p.Age || ''}</td>
-          <td>${p.Gender || ''}</td>
-          <td>${p.Conditions || ''}</td>
-          <td>${p['Date of joining'] || ''}</td>
-          <td>${p.Number || ''}</td>
-          <td>${p.Address || ''}</td>
-          <td>${p.Occupation || ''}</td>
-          <td>${p['Ref.by'] || ''}</td>
-          <td>${p.Time || ''}</td>
-          <td>${p['Visit Count'] || ''}</td>
-          <td>${(p['Visit Days'] || '').split(',').map(d => `<span class="badge-day">${d.trim()}</span>`).join('')}</td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function applyFilters() {
-      const search = document.getElementById("searchInput").value.toLowerCase();
-      const gender = document.getElementById("genderFilter").value;
-      const condition = document.getElementById("conditionFilter").value;
-      const day = document.getElementById("dayFilter").value.toLowerCase();
-
-      const filtered = allPatients.filter(p => {
-        const matchesSearch =
-          p.Name?.toLowerCase().includes(search) ||
-          p.Patient_ID?.toString().includes(search) ||
-          p.Number?.toString().includes(search);
-
-        const matchesGender = !gender || p.Gender === gender;
-        const matchesCondition = !condition || p.Conditions === condition;
-        const matchesDay = !day || p['Visit Days']?.toLowerCase().includes(day);
-
-        return matchesSearch && matchesGender && matchesCondition && matchesDay;
-      });
-
-      renderTable(filtered);
-    }
-
-    document.querySelectorAll("#searchInput, #genderFilter, #conditionFilter, #dayFilter").forEach(el => {
-      el.addEventListener("input", applyFilters);
-      el.addEventListener("change", applyFilters);
+    
+    // 2. Build the final payload using the canonical order, pulling values from formValues
+    const finalPayload = {};
+    
+    // Iterate over the Canonical Order to ensure all keys are present and correctly ordered
+    CANONICAL_HEADERS.forEach(header => {
+        if (header === "Visit Count") {
+            // Explicitly set initial Visit Count to "0"
+            finalPayload[header] = "0";
+        } else if (header === "Visit Days") {
+            // Process Visit Days separately
+            const selectedDays = Array.from(checkboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            finalPayload[header] = selectedDays;
+        } else {
+            // Pull value from form data, defaulting to empty string if no input was found
+            finalPayload[header] = formValues[header] || "";
+        }
     });
 
-    loadPatients();
-  </script>
-</body>
-</html>
+    if (finalPayload['Visit Days'].length === 0) {
+        alert('Please select at least one Visit Day');
+        return;
+    }
+
+    try {
+        const res = await fetch('/api/patients', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(finalPayload) // Send the strictly ordered payload
+        });
+        const result = await res.json();
+        if (result.status === 'success') {
+            alert('✅ Patient added successfully! Data is aligned.');
+            e.target.reset();
+            selectedField.value = '';
+            window.location.href = '/history'; 
+        } else {
+            alert('⚠️ Error: ' + (result.message || 'Failed to add patient'));
+        }
+    } catch (err) {
+        console.error('Error adding patient:', err);
+        alert('⚠️ Error adding patient.');
+    }
+});
+</script>
+
+<style>
+.card {
+    border-radius: 15px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+.form-control:focus {
+    box-shadow: 0 0 5px rgba(0,123,255,0.5);
+    border-color: #007bff;
+}
+#visitDaysCheckboxes .form-check {
+    min-width: 120px;
+}
+</style>
+{% endblock %}

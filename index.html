@@ -1,45 +1,26 @@
 {% extends "base.html" %}
-
 {% block content %}
 <div class="text-center mt-5">
-  <h1 class="display-6 text-primary mb-3">Welcome to Your Clinic Dashboard</h1>
-  <p class="lead text-muted">Easily manage patients and track daily visits.</p>
+  <h1 class="text-primary fw-bold">Welcome to Your Clinic Dashboard</h1>
+  <p class="text-muted">Easily manage patients and track daily visits.</p>
 
-  <div class="row mt-4 justify-content-center">
-    <div class="col-md-3">
-      <div class="card p-3 text-center">
-        <h5>🩺 Today’s Patients (<span id="today-count">0</span>)</h5>
-        <a href="/today" class="btn btn-outline-primary mt-2">View List</a>
-      </div>
+  <div class="d-flex justify-content-center gap-4 mt-4 flex-wrap">
+    <div class="card shadow-sm p-3" style="width: 250px;">
+      <h5>🩺 Today's Patients</h5>
+      <h4 class="text-success fw-bold">{{ today_count }}</h4>
+      <a href="/today" class="btn btn-outline-primary mt-2">View List</a>
     </div>
 
-    <div class="col-md-3">
-      <div class="card p-3 text-center">
-        <h5>➕ Add Patient</h5>
-        <a href="/add" class="btn btn-outline-success mt-2">Add Now</a>
-      </div>
+    <div class="card shadow-sm p-3" style="width: 250px;">
+      <h5>➕ Add Patient</h5>
+      <a href="/add" class="btn btn-outline-success mt-4">Add Now</a>
     </div>
 
-    <div class="col-md-3">
-      <div class="card p-3 text-center">
-        <h5>📋 All Patients</h5>
-        <a href="/history" class="btn btn-outline-info mt-2">View All</a>
-      </div>
+    <div class="card shadow-sm p-3" style="width: 250px;">
+      <h5>📋 All Patients</h5>
+      <h4 class="text-info fw-bold">{{ total_count }}</h4>
+      <a href="/history" class="btn btn-outline-info mt-2">View All</a>
     </div>
   </div>
 </div>
-
-<script>
-// Load today's patient count dynamically
-async function loadTodayCount() {
-    try {
-        const res = await fetch('/api/patients/today');
-        const data = await res.json();
-        document.getElementById('today-count').innerText = data.length || 0;
-    } catch(err) {
-        console.error('Failed to load today\'s patients:', err);
-    }
-}
-loadTodayCount();
-</script>
 {% endblock %}
